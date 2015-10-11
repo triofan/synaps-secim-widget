@@ -1,4 +1,10 @@
 (function(window, document, undefined) {
+  var inject = document.querySelector('[data-synaps-token],[synaps-token]');
+  var token = '';
+  if (!inject) {
+    token = inject.getAttribute('synaps-token') || inject.getAttribute('data-synaps-token');
+  }
+
   var elements = document.querySelectorAll('[synaps-secim],[data-synaps-secim]');
 
   if (elements.length > 0) {
@@ -38,7 +44,7 @@
         url = window.__synaps_election_url;
       }
 
-      iframe.src = url + '?iframe';
+      iframe.src = url + '?token=' + encodeURI(token) + '&iframe';
       iframe.setAttribute('class', '__synaps-iframe');
       element.appendChild(iframe);
     }
