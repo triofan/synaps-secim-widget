@@ -80,7 +80,7 @@
 
       var mode = element.getAttribute('synaps-secim') || element.getAttribute('data-synaps-secim');
       if (mode == 'ozet') {
-        url += '/ozet';
+        url += 'ozet';
         iframe.classList.add('__synaps-iframe-summary');
 
         if (element.hasAttribute('topbar')) {
