@@ -1,4 +1,31 @@
 (function(window, document, undefined) {
+
+  var observeDOM = (function(){
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
+        eventListenerSupported = window.addEventListener;
+
+    return function(obj, callback){
+      if( MutationObserver ){
+        // define a new observer
+        var obs = new MutationObserver(function(mutations, observer){
+            if( mutations[0].addedNodes.length || mutations[0].removedNodes.length )
+                callback();
+        });
+        // have the observer observe foo for changes in children
+        obs.observe( obj, { childList:true, subtree:true });
+      }
+      else if( eventListenerSupported ){
+        obj.addEventListener('DOMNodeInserted', callback, false);
+        obj.addEventListener('DOMNodeRemoved', callback, false);
+      }
+    }
+  })();
+
+  // Observe a specific DOM element:
+  observeDOM( document.body, function(){
+    console.log('dom changed', arguments);
+  });
+
   var inject = document.querySelector('[data-synaps-token],[synaps-token]');
   var token = '';
   if (!inject) {
@@ -11,10 +38,6 @@
     var sheet = (function() {
       // Create the <style> tag
       var style = document.createElement("style");
-
-      // Add a media (and/or media query) here if you'd like!
-      // style.setAttribute("media", "screen")
-      // style.setAttribute("media", "only screen and (max-width : 1024px)")
 
       // WebKit hack :(
       style.appendChild(document.createTextNode(""));
@@ -34,18 +57,60 @@
       }
     }
 
-    addCSSRule(".__synaps-iframe", "width: 100%; height: 200px", 1);
+    addCSSRule(sheet, ".__synaps-iframe", "width: 100%; border: none;", 0);
+    addCSSRule(sheet, ".__synaps-iframe-summary", "height: 120px", 1);
+    addCSSRule(sheet, ".__synaps-iframe-with-topbar", "height: 150px", 2);
+    addCSSRule(sheet, ".__synaps-iframe-detail", "height: 400px", 3);
 
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
       var iframe = document.createElement('iframe');
       var url = 'https://secim.synaps.ly/';
+
+      iframe.classList.add('__synaps-iframe');
+
+      var params = {
+        token: token,
+        iframe: true
+      };
+
       if (window.__synaps_election_url) {
         url = window.__synaps_election_url;
       }
 
-      iframe.src = url + '?token=' + encodeURI(token) + '&iframe';
-      iframe.setAttribute('class', '__synaps-iframe');
+      var mode = element.getAttribute('synaps-secim') || element.getAttribute('data-synaps-secim');
+      if (mode == 'ozet') {
+        url += '/ozet';
+        iframe.classList.add('__synaps-iframe-summary');
+
+        if (element.hasAttribute('topbar')) {
+          params.topbar = true;
+          iframe.classList.add('__synaps-iframe-with-topbar');
+        }
+      } else {
+        iframe.classList.add('__synaps-iframe-detail');
+
+      }
+
+      if (element.hasAttribute('detail-url')) {
+        params['detailurl'] = element.getAttribute('detail-url');
+      }
+
+      var quesystring = (function (){
+        var parts = [];
+
+        for(var key in params) {
+          if (params[key] === true) {
+            parts.push(key);
+          } else {
+            parts.push(key + '=' + encodeURI(params[key]));
+          }
+        }
+
+        return parts.join('&');
+      })();
+
+      iframe.src = url + '?' + quesystring;
       element.appendChild(iframe);
     }
   }

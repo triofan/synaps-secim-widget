@@ -3,9 +3,7 @@
 Synaps seçim sonuçlarını yayınlamak istediğiniz sayfaların `</body>` etiketinden önce aşağıdaki kod parçacığını yükleyin.
 
 ```
-<script data-synaps-token="[[token kodunuz]]" src="https://secim.synaps.ly/embed/widget.js" defer async>
-(function() { var script = document.createElement('script'); script.async = true; script.src = 'https://secim.synaps.ly/embed/widget.js'; var entry = document.getElementsByTagName('script')[0]; entry.parentNode.insertBefore(sc ript, entry); })();
-</script>
+<script data-synaps-token="[[token kodunuz]]" src="https://secim.synaps.ly/embed/widget.js" defer async></script>
 ```
 
 Daha sonrasında istediğiniz ekrana göre aşağıdaki html kodlarını sayfanızın istediğiniz bölümüne ekleyebilirsiniz.
@@ -16,6 +14,11 @@ Daha sonrasında istediğiniz ekrana göre aşağıdaki html kodlarını sayfan�
 
 ```
 <div synaps-secim="ozet"></div>
+```
+
+
+```
+<div synaps-secim="ozet" topbar detail-url="http://www.habersitesm.com/secim-2015"></div>
 ```
 
 ## Detay ekranı
