@@ -58,8 +58,8 @@
     }
 
     addCSSRule(sheet, ".__synaps-iframe", "width: 100%; border: none;", 0);
-    addCSSRule(sheet, ".__synaps-iframe-summary", "height: 120px", 1);
-    addCSSRule(sheet, ".__synaps-iframe-with-topbar", "height: 150px", 2);
+    addCSSRule(sheet, ".__synaps-iframe-summary", "height: 125px", 1);
+    addCSSRule(sheet, ".__synaps-iframe-with-topbar", "height: 160px", 2);
     addCSSRule(sheet, ".__synaps-iframe-detail", "height: 400px", 3);
 
     for (var i = 0; i < elements.length; i++) {
