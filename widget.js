@@ -65,7 +65,7 @@
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
       var iframe = document.createElement('iframe');
-      var url = 'https://secim.synaps.ly/';
+      var url = 'https://secim-demo.synaps.ly/';
 
       iframe.classList.add('__synaps-iframe');
 
