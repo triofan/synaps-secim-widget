@@ -101,7 +101,7 @@
 
         var mode = getAttribute(element, ELECTION_ATTR);
         if (mode == 'ozet') {
-          url += 'ozet';
+          url += 'ozet/';
           iframe.classList.add(SUMMARY_CLASS);
 
           if (hasAttribute(element, TOPBAR_ATTR)) {
