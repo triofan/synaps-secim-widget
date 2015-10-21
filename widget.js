@@ -1,117 +1,131 @@
 (function(window, document, undefined) {
+  // Constants
+  var IFRAME_CLASS = '__synaps-iframe',
+      SUMMARY_CLASS = '__synaps-iframe-summary',
+      TOPBAR_CLASS = '__synaps-iframe-with-topbar',
+      DETAIL_CLASS = '__synaps-iframe-detail',
 
-  var observeDOM = (function(){
-    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
-        eventListenerSupported = window.addEventListener;
+      TOKEN_ATTR = 'synaps-token',
+      ELECTION_ATTR = 'synaps-secim',
+      TOPBAR_ATTR = 'topbar',
+      DETAILURL_ATTR = 'detail-url',
 
-    return function(obj, callback){
-      if( MutationObserver ){
-        // define a new observer
-        var obs = new MutationObserver(function(mutations, observer){
-            if( mutations[0].addedNodes.length || mutations[0].removedNodes.length )
-                callback();
-        });
-        // have the observer observe foo for changes in children
-        obs.observe( obj, { childList:true, subtree:true });
-      }
-      else if( eventListenerSupported ){
-        obj.addEventListener('DOMNodeInserted', callback, false);
-        obj.addEventListener('DOMNodeRemoved', callback, false);
-      }
-    }
-  })();
+      BASE_URL = 'https://secim-demo.synaps.ly/';
 
-  // Observe a specific DOM element:
-  observeDOM( document.body, function(){
-    console.log('dom changed', arguments);
-  });
+  // Ensures needed styles has injected
+  var ensureStylesReady = (function () {
+    var stylesReady = false;
 
-  var inject = document.querySelector('[data-synaps-token],[synaps-token]');
-  var token = '';
-  if (!inject) {
-    token = inject.getAttribute('synaps-token') || inject.getAttribute('data-synaps-token');
-  }
+    return function () {
+      if (!stylesReady) {
+        var sheet = (function() {
+          // Create the <style> tag
+          var style = document.createElement("style");
 
-  var elements = document.querySelectorAll('[synaps-secim],[data-synaps-secim]');
+          // WebKit hack :(
+          style.appendChild(document.createTextNode(""));
 
-  if (elements.length > 0) {
-    var sheet = (function() {
-      // Create the <style> tag
-      var style = document.createElement("style");
+          // Add the <style> element to the page
+          document.head.appendChild(style);
 
-      // WebKit hack :(
-      style.appendChild(document.createTextNode(""));
+          return style.sheet;
+        })();
 
-      // Add the <style> element to the page
-      document.head.appendChild(style);
+        function addCSSClassRule(sheet, selector, rules, index) {
+          selector = '.' + selector;
 
-      return style.sheet;
-    })();
-
-    function addCSSRule(sheet, selector, rules, index) {
-      if("insertRule" in sheet) {
-        sheet.insertRule(selector + "{" + rules + "}", index);
-      }
-      else if("addRule" in sheet) {
-        sheet.addRule(selector, rules, index);
-      }
-    }
-
-    addCSSRule(sheet, ".__synaps-iframe", "width: 100%; border: none;", 0);
-    addCSSRule(sheet, ".__synaps-iframe-summary", "height: 125px", 1);
-    addCSSRule(sheet, ".__synaps-iframe-with-topbar", "height: 160px", 2);
-    addCSSRule(sheet, ".__synaps-iframe-detail", "height: 400px", 3);
-
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i];
-      var iframe = document.createElement('iframe');
-      var url = 'https://secim-demo.synaps.ly/';
-
-      iframe.classList.add('__synaps-iframe');
-
-      var params = {
-        token: token,
-        iframe: true
-      };
-
-      if (window.__synaps_election_url) {
-        url = window.__synaps_election_url;
-      }
-
-      var mode = element.getAttribute('synaps-secim') || element.getAttribute('data-synaps-secim');
-      if (mode == 'ozet') {
-        url += 'ozet';
-        iframe.classList.add('__synaps-iframe-summary');
-
-        if (element.hasAttribute('topbar')) {
-          params.topbar = true;
-          iframe.classList.add('__synaps-iframe-with-topbar');
-        }
-      } else {
-        iframe.classList.add('__synaps-iframe-detail');
-
-      }
-
-      if (element.hasAttribute('detail-url')) {
-        params['detailurl'] = element.getAttribute('detail-url');
-      }
-
-      var quesystring = (function (){
-        var parts = [];
-
-        for(var key in params) {
-          if (params[key] === true) {
-            parts.push(key);
-          } else {
-            parts.push(key + '=' + encodeURI(params[key]));
+          if("insertRule" in sheet) {
+            sheet.insertRule(selector + "{" + rules + "}", index);
+          }
+          else if("addRule" in sheet) {
+            sheet.addRule(selector, rules, index);
           }
         }
 
-        return parts.join('&');
-      })();
+        // Add style rules for needed classes
+        addCSSClassRule(sheet, IFRAME_CLASS, "width: 100%; border: none;", 0);
+        addCSSClassRule(sheet, SUMMARY_CLASS, "height: 125px", 1);
+        addCSSClassRule(sheet, TOPBAR_CLASS, "height: 160px", 2);
+        addCSSClassRule(sheet, DETAIL_CLASS, "height: 400px", 3);
 
-      iframe.src = url + '?' + quesystring;
-      element.appendChild(iframe);
+        stylesReady = true;
+      }
+    };
+  })();
+
+  var getQuerystring = function (params) {
+    var parts = [];
+
+    for(var key in params) {
+      if (params[key] === true) {
+        parts.push(key);
+      } else {
+        parts.push(key + '=' + encodeURI(params[key]));
+      }
+    }
+
+    return parts.join('&');
+  };
+
+  var getAttribute = function (element, attribute) {
+    return element.getAttribute(attribute) || element.getAttribute('data-' + attribute);
+  };
+
+  var hasAttribute = function (element, attribute) {
+    return element.hasAttribute(attribute) || element.hasAttribute('data-' + attribute);
+  };
+
+  var init = function () {
+    var inject = document.querySelector('[data-'+TOKEN_ATTR+'],['+TOKEN_ATTR+']');
+    var token = '';
+    if (!inject) {
+      token = getAttribute(inject, TOKEN_ATTR);
+    }
+
+    var elements = document.querySelectorAll('['+ELECTION_ATTR+'],[data-'+ELECTION_ATTR+']');
+
+    if (elements.length > 0) {
+      ensureStylesReady();
+
+      for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        var iframe = document.createElement('iframe');
+        var url = window.__synaps_election_url || BASE_URL;
+
+        iframe.classList.add(IFRAME_CLASS);
+
+        var params = {
+          token: token,
+          iframe: true
+        };
+
+        var mode = getAttribute(element, ELECTION_ATTR);
+        if (mode == 'ozet') {
+          url += 'ozet';
+          iframe.classList.add(SUMMARY_CLASS);
+
+          if (hasAttribute(element, TOPBAR_ATTR)) {
+            params.topbar = true;
+            iframe.classList.add(TOPBAR_CLASS);
+          }
+        } else {
+          iframe.classList.add(DETAIL_CLASS);
+        }
+
+        if (hasAttribute(element, DETAILURL_ATTR)) {
+          params['detailurl'] = getAttribute(element, DETAILURL_ATTR);
+        }
+
+        iframe.src = url + '?' + getQuerystring(params);
+        element.appendChild(iframe);
+      }
     }
   }
+
+  init();
+
+  window.Synaps = {
+    init: init
+  };
+
 })(window, document);
