@@ -25,7 +25,7 @@ Bazı opsiyonel attribute değerleri mevcuttur:
 Örnek kullanım:
 
 ```
-<div synaps-secim="ozet" topbar detail-url="http://www.habersitesm.com/secim-2015"></div>
+<div synaps-secim="ozet" topbar detail-url="http://www.siteadi.com/secim-2015"></div>
 ```
 
 Özet ekranı örnek görüntüsü:
@@ -54,7 +54,7 @@ Bazı opsiyonel attribute değerleri mevcuttur:
 * Bütün attribute değerlerini, dilerseniz `data-` attribute olarak da kullanabilirsiniz. Örneğin:
 
 ```
-<div data-synaps-secim="ozet" data-topbar data-detail-url="http://www.habersitesm.com/secim-2015"></div>
+<div data-synaps-secim="ozet" data-topbar data-detail-url="http://www.siteadi.com/secim-2015"></div>
 ```
 
-* Seçim gününden önce embed kodu çalıştığı yere ekranları basmayacaktır. Ancak test etmek için, etiketleri koyduğunuz sayfanın adresine `__synaps_test` ekleyebilirsiniz. Örneğin sitenizin adresi `http://www.habersitem.com` ise, `http://www.habersitem.com/?__synaps_test` şeklinde açtığınızda ekranlar örnek verilerle açılacaktır.
+* Seçim gününden önce embed kodu çalıştığı yere ekranları basmayacaktır. Ancak test etmek için, etiketleri koyduğunuz sayfanın adresine `__synaps_test` ekleyebilirsiniz. Örneğin sitenizin adresi `http://www.siteadi.com` ise, `http://www.siteadi.com/?__synaps_test` şeklinde açtığınızda ekranlar örnek verilerle açılacaktır.
