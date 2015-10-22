@@ -28,6 +28,10 @@ Bazı opsiyonel attribute değerleri mevcuttur:
 <div synaps-secim="ozet" topbar detail-url="http://www.habersitesm.com/secim-2015"></div>
 ```
 
+Özet ekranı örnek görüntüsü:
+
+![](https://cloud.githubusercontent.com/assets/127687/10665432/d6127186-78d3-11e5-817e-be80bd5d6c39.png)
+
 ## Detay ekranı
 
 (Detaylar yakında burada olacak)
