@@ -3,7 +3,7 @@
 Synaps seçim sonuçlarını yayınlamak istediğiniz sayfaların `</body>` etiketinden önce aşağıdaki kod parçacığını yükleyin.
 
 ```
-<script synaps-token="[[token kodunuz]]" src="https://secim.synaps.ly/embed/widget.js" defer async></script>
+<script src="https://secim.synaps.ly/embed/widget.js" defer async></script>
 ```
 
 Daha sonrasında istediğiniz ekrana göre aşağıdaki html kodlarını sayfanızın istediğiniz bölümüne ekleyebilirsiniz.

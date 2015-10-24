@@ -5,7 +5,6 @@
       TOPBAR_CLASS = '__synaps-iframe-with-topbar',
       DETAIL_CLASS = '__synaps-iframe-detail',
 
-      TOKEN_ATTR = 'synaps-token',
       ELECTION_ATTR = 'synaps-secim',
       TOPBAR_ATTR = 'topbar',
       DETAILURL_ATTR = 'detail-url',
@@ -78,12 +77,6 @@
   };
 
   var init = function () {
-    var inject = document.querySelector('[data-'+TOKEN_ATTR+'],['+TOKEN_ATTR+']');
-    var token = '';
-    if (!inject) {
-      token = getAttribute(inject, TOKEN_ATTR);
-    }
-
     var elements = document.querySelectorAll('['+ELECTION_ATTR+'],[data-'+ELECTION_ATTR+']');
 
     if (elements.length > 0) {
@@ -97,7 +90,6 @@
         iframe.classList.add(IFRAME_CLASS);
 
         var params = {
-          token: token,
           iframe: true
         };
 
