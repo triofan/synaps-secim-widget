@@ -10,6 +10,8 @@
       TOPBAR_ATTR = 'topbar',
       DETAILURL_ATTR = 'detail-url',
 
+      DEBUG_INITIATOR = '__synaps_test',
+
       BASE_URL = 'https://secim-demo.synaps.ly/';
 
   // Ensures needed styles has injected
@@ -122,7 +124,12 @@
     }
   }
 
-  init();
+  var now = new Date(),
+      electionDate = new Date('2015-11-01');
+
+  if (now > electionDate || window[DEBUG_INITIATOR] || window.location.href.indexOf(DEBUG_INITIATOR) > -1) {
+    init();
+  }
 
   window.Synaps = {
     init: init
