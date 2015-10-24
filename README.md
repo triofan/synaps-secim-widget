@@ -12,7 +12,7 @@ Daha sonrasında istediğiniz ekrana göre aşağıdaki html kodlarını sayfan�
 
 Özet ekranı, sitenizin ana sayfasına son durumu özetleyen bir canlı veri ekranı yerleştirmek için tasarlanmıştır. 125 veya 160 piksel yüksekliğinde olabilir. Genişliği içinde bulunduğu elementi dolduracak şekilde(100%) tasarlanmıştır. Tasarım responsive olduğu için mobil, tablet ve masaüstünde farklı öğeler barındırmaktadır.
 
-Özet ekranının görünmesini istediğiniz etikete `synaps-secim` attribute'u eklemeniz ve bu attribute'a `ozet` değeri vermil olmanız gerekmektedir. Örnek:
+Özet ekranının görünmesini istediğiniz etikete `synaps-secim` attribute'u eklemeniz ve bu attribute'a `ozet` değeri vermiş olmanız gerekmektedir. Örnek:
 ```
 <div synaps-secim="ozet"></div>
 ```
@@ -34,20 +34,21 @@ Bazı opsiyonel attribute değerleri mevcuttur:
 
 ## Detay ekranı
 
-(Detaylar yakında burada olacak)
+Detay ekranının görünmesini istediğiniz sayfada ilgili bölüme aşağıdaki gibi `synaps-secim` özellikli bir element eklemeniz yeterlidir.
 
 ```
 <div synaps-secim></div>
 ```
 
-## Şehir detay ekranı
+Bazı opsiyonel attribute değerleri mevcuttur:
 
-(Detaylar yakında burada olacak)
+*height*: `full` veya `auto` değerleri alabilir. `full` değeri verilirse iframe yüksekliği olarak `100%` değeri verilir ve içinde bulunduğu elementin yüksekliği kadar olması sağlanır. Bu sayede dışta bulunan elementin yüksekliğini değiştirerek farklı yüksekliklerde detay ekranları oluşturabilirsiniz. `auto` değerinde detay ekranının içeriğine göre otomatik yükseklik verilir. Varsayılan değer `auto` değeridir.
+
+*city-code*: Plaka kodu verilen ilin seçili olduğu bir detay ekranı açılır.
 
 ```
 <div synaps-secim city-code="[[ sehir plaka kodu ]]"></div>
 ```
-
 
 ## Notlar
 

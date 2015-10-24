@@ -4,10 +4,12 @@
       SUMMARY_CLASS = '__synaps-iframe-summary',
       TOPBAR_CLASS = '__synaps-iframe-with-topbar',
       DETAIL_CLASS = '__synaps-iframe-detail',
+      HEIGHT_FULL_CLASS = '__synaps-iframe-height-full',
 
       ELECTION_ATTR = 'synaps-secim',
       TOPBAR_ATTR = 'topbar',
       DETAILURL_ATTR = 'detail-url',
+      HEIGHT_ATTR = 'height',
 
       DEBUG_INITIATOR = '__synaps_test',
 
@@ -48,6 +50,7 @@
         addCSSClassRule(sheet, SUMMARY_CLASS, "height: 125px", 1);
         addCSSClassRule(sheet, TOPBAR_CLASS, "height: 160px", 2);
         addCSSClassRule(sheet, DETAIL_CLASS, "height: 400px", 3);
+        addCSSClassRule(sheet, HEIGHT_FULL_CLASS, "height: 100%", 4);
 
         stylesReady = true;
       }
@@ -106,6 +109,23 @@
           iframe.classList.add(DETAIL_CLASS);
         }
 
+        var height = getAttribute(element, HEIGHT_ATTR);
+
+        if (height == 'full') {
+          iframe.classList.add(HEIGHT_FULL_CLASS);
+        }
+
+        if (height == 'auto' || !height) {
+          params.height = 'auto';
+          window.addEventListener("message", function (event) {
+            if (event.data > 0) {
+              iframe.style.height = event.data + 'px';
+            }
+          }, false);
+        }
+
+        iframe.style.maxHeight = window.innerHeight + 'px';
+
         if (hasAttribute(element, DETAILURL_ATTR)) {
           params['detailurl'] = getAttribute(element, DETAILURL_ATTR);
         }
@@ -115,6 +135,7 @@
       }
     }
   }
+
 
   var now = new Date(),
       electionDate = new Date('2015-11-01');
