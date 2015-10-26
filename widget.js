@@ -1,4 +1,8 @@
 (function(window, document, undefined) {
+  if (window.Synaps) {
+    return;
+  }
+
   // Constants
   var IFRAME_CLASS = '__synaps-iframe',
       SUMMARY_CLASS = '__synaps-iframe-summary',
