@@ -10,6 +10,7 @@
       TOPBAR_ATTR = 'topbar',
       DETAILURL_ATTR = 'detail-url',
       HEIGHT_ATTR = 'height',
+      CITYCODE_ATTR = 'city-code',
 
       DEBUG_INITIATOR = '__synaps_test',
 
@@ -128,6 +129,11 @@
 
         if (hasAttribute(element, DETAILURL_ATTR)) {
           params['detailurl'] = getAttribute(element, DETAILURL_ATTR);
+        }
+
+        var cityCode = getAttribute(element, CITYCODE_ATTR);
+        if (cityCode) {
+          params['city'] = cityCode;
         }
 
         iframe.src = url + '?' + getQuerystring(params);
