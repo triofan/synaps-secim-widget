@@ -137,6 +137,7 @@
         }
 
         iframe.src = url + '?' + getQuerystring(params);
+        element.innerHTML = '';
         element.appendChild(iframe);
       }
     }
