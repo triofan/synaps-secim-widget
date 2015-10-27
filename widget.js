@@ -129,8 +129,6 @@
           }, false);
         }
 
-        iframe.style.maxHeight = window.innerHeight + 'px';
-
         if (hasAttribute(element, DETAILURL_ATTR)) {
           params['detailurl'] = getAttribute(element, DETAILURL_ATTR);
         }
