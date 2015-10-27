@@ -18,7 +18,7 @@
 
       DEBUG_INITIATOR = '__synaps_test',
 
-      BASE_URL = 'https://secim-demo.synaps.ly/';
+      BASE_URL = 'https://secim-demo.synaps.ly/#/';
 
   // Ensures needed styles has injected
   var ensureStylesReady = (function () {
