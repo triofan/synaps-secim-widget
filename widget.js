@@ -1,5 +1,6 @@
 (function(window, document, undefined) {
   if (window.Synaps) {
+    Synaps.init();
     return;
   }
 
